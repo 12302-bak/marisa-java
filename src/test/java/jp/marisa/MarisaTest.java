@@ -12,7 +12,9 @@
  *--------------------------------------------------------------------------*/
 package jp.marisa;
 
-import static org.junit.Assert.*;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -20,9 +22,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MarisaTest {
 	
