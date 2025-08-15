@@ -186,6 +186,24 @@ public class Marisa implements java.io.Closeable {
 			agent.dispose();
 		}
 	}
+	public IdKeyPair lookup(long id){
+		AgentNative agent = new AgentNative();
+		try {
+			agent.set_query(id);
+
+			this.trie.reverse_lookup(agent);
+
+			KeyNative keyNative = agent.key();
+			IdKeyPair ret = new IdKeyPair();
+
+			ret.Id = keyNative.id();
+			ret.Key = new String(keyNative.text(), this.getCharset());
+
+			return ret;
+		} finally {
+			agent.dispose();
+		}
+	}
 	
 	public IdKeyPair reverseLookup(String key) {
 		return reverseLookup(key, 0);
