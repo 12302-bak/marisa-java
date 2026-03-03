@@ -2,56 +2,128 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>jp.marisa</groupId>
+	<!--<groupId>jp.marisa</groupId>-->
+	<groupId>site.wtfu.framework</groupId>
 	<artifactId>marisa-java</artifactId>
-	<version>0.2.0-1.0.1</version>
+	<version>0.2.0-1.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>marisa-java</name>
 	<url>http://maven.apache.org</url>
+	<description>add this for deploy to maven central</description>
+
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>ancel</name>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/12302-bak/darts-clone-java.git</connection>
+		<developerConnection>scm:git:ssh://github.com/12302-bak/darts-clone-java.git</developerConnection>
+		<url>https://github.com/12302-bak/darts-clone-java.git</url>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<distributionManagement>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>marisa-java.googlecode.com</id>
-			<url>svn:https://marisa-java.googlecode.com/svn/maven/repo/</url>
-		</repository>
-	</distributionManagement>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.0</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.sisu</groupId>
+				<artifactId>sisu-maven-plugin</artifactId>
+				<version>0.3.5</version>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<id>generate-index</id>
 						<goals>
-							<goal>jar</goal>
+							<goal>main-index</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<locale>en_US</locale>
-				</configuration>
+				<version>2.9.1</version>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<id>attach-javadocs</id>
 						<goals>
 							<goal>jar</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<additionalJOptions>
+						<additionalJOption>-Xdoclint:none</additionalJOption>
+					</additionalJOptions>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<useDefaultManifestFile>true</useDefaultManifestFile>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>3.2.3</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.6.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>central</publishingServerId>
+					<checksums>required</checksums>
+				</configuration>
 			</plugin>
 		</plugins>
 		<extensions>
@@ -67,7 +139,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>[4.8.2,5.0)</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -76,11 +148,6 @@
 			<version>[1.8.5,2.0)</version>
 			<type>jar</type>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>3.4</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -1,0 +1,29 @@
+name: Test Native Libraries (Multi-Platform)
+
+on:
+  # 手动触发（推荐）
+  workflow_dispatch:
+  # push:
+    # branches: [ main ]
+
+# 👇 全局设置默认 shell 为 bash
+# GitHub Actions 在 Windows runner 上默认使用 PowerShell 7 执行 run: 命令：
+# 在 run: 步骤中强制使用 bash（Windows runner 已预装 Git Bash）：
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  test-java:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-15-intel, ubuntu-24.04, windows-2025 ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and run validation
+        run: mvn clean test
