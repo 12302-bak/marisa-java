@@ -25,5 +25,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # (msvcp100.dll 丢失) 仅在 Windows 上安装 VC++ 2010 Redist
+      - name: Install Visual C++ 2010 Redistributable (Windows only)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $url = "https://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFFC/vcredist_x64.exe"
+          $output = "$env:TEMP\vcredist_x64_2010.exe"
+          Write-Host "Downloading VC++ 2010 Redistributable..."
+          Invoke-WebRequest -Uri $url -OutFile $output
+          Write-Host "Installing silently..."
+          Start-Process -FilePath $output -ArgumentList "/install", "/quiet", "/norestart" -Wait
+          Write-Host "Installation completed."
+          
       - name: Build and run validation
         run: mvn clean test
